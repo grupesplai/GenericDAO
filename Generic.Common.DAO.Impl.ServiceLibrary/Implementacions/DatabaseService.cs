@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Globalization;
 using Generic.Common.DAO.Contracts.ServiceLibrary;
 using Generic.Common.DAO.Contracts.ServiceLibrary.DTO;
 using Generic.Common.DAO.Impl.ServiceLibrary.Configuration;
@@ -25,21 +27,46 @@ namespace Generic.Common.DAO.Impl.ServiceLibrary
         {
             try
             {
-                var covalcoDtos = SqlCmd.NewTextCommand(this._conn.DatabaseConnString)
-                    .SetCommandText(@"
-                        SELECT TOP (1000) [DepartureStation]
-                                    ,[ConnectionStation]
-                                    ,[ArrivalStation]
-                                    ,[Class]
-                                    ,[FeeConnection]
-                                    ,[LongConnection]
-                                FROM [Connectio].[dbo].[ConnectionFeePrice]")
-                    .Execute().ToList<CovalcoDTO>();
-                return covalcoDtos;
+                return SqlCmd.NewTextCommand(this._conn.DatabaseConnString)
+                    .SetCommandText(@"SELECT TOP (1000) [AirportCode]
+                                  ,[CurrencyCode]
+                                  ,[Rate]
+                                  ,[TaxAmount]
+                                  ,[RTOrder]
+                                  ,[Details]
+                                  ,[CountryCode]
+                                  ,[TaxCode]
+                                  ,[TaxDefinition]
+                                  ,[RemittanceBySelling]
+                                  ,[RemittanceByLifting]
+                                  ,[AppliedOnDeparture]
+                                  ,[AppliedOnArrival]
+                                  ,[LastModified]
+                                  ,[InsertedDate]
+                              FROM [Connectio].[dbo].[CovalcoDetails]")
+                    .ExecuteForSQL().ToList<CovalcoDTO>();
             }
             catch (Exception ex)
             {
                 throw new SqlServerException("", ex);
+            }
+        }
+
+        public void insertBulk(List<CovalcoDTO> airportTaxes)
+        {
+            this.truncateTable("CovalcoDetails");
+            SqlBulk.BulkInsertByTake(_conn.DatabaseConnString, "CovalcoDetails", airportTaxes);
+        }
+
+        private void truncateTable(string tableName)
+        {
+            try
+            {
+                SqlCmd.NewTextCommand(_conn.DatabaseConnString).SetCommandText($"Truncate Table {tableName}").ExecuteForSQL();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error Truncating all data from {tableName} table", ex);
             }
         }
     }

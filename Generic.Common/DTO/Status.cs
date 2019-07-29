@@ -8,8 +8,8 @@ namespace Generic.Common.DAO.Contracts.ServiceLibrary.DTO
 {
     public enum Status
     {
-        Close =0,
-        Open,
-        Middle
+        Close = 0,
+        Open = 1,
+        Middle = 2
     }
 }

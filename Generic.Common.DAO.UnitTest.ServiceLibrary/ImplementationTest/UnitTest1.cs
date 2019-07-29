@@ -12,7 +12,7 @@ namespace Generic.Common.DAO.UnitTest.ServiceLibrary.ImplementationTest
     [TestClass]
     public class UnitTest1
     {
-        private const string DATABASE_CONN_STRING = @"CONNECTION_STRING _FROM_DATABASE";
+        private const string DATABASE_CONN_STRING = @"Data Source=(localdb)\HarryServer;Initial Catalog=Connectio;Integrated Security=True";
 
         private MockFactory mockFactory;
         private IDaoServiceCrud _crudService;
@@ -35,10 +35,7 @@ namespace Generic.Common.DAO.UnitTest.ServiceLibrary.ImplementationTest
         {
            List<CovalcoDTO> dtos =  _crudService.GetAllData();
 
-            Assert.AreEqual(dtos[0].ArrivalStation, "PMI");
-            Assert.AreEqual(dtos[0].Class, "D");
-            Assert.AreEqual(dtos[0].FeeConnection, new decimal(23));
-            Assert.AreEqual(dtos[0].LongConnection, Status.Close);
+            _crudService.insertBulk(dtos);
         }
     }
 }

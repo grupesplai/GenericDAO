@@ -43,7 +43,7 @@ namespace Generic.Common.DAO.Impl.ServiceLibrary.Helpers.CollectionMapper
 
         public static List<T> ToList<T>(this DataSet table) where T : new()
         {
-            IList<PropertyInfo> properties = typeof(T).GetProperties().ToList();
+            List<PropertyInfo> properties = typeof(T).GetProperties().ToList();
             List<T> result = new List<T>();
 
             foreach (var row in table.Tables[0].Rows)
@@ -55,22 +55,50 @@ namespace Generic.Common.DAO.Impl.ServiceLibrary.Helpers.CollectionMapper
             return result;
         }
 
-        private static T CreateItemFromRow<T>(DataRow row, IList<PropertyInfo> properties) where T : new()
+        public static T ToObject<T>(this DataSet table) where T : new()
+        {
+            List<PropertyInfo> properties = typeof(T).GetProperties().ToList();
+
+            return CreateItemFromRow<T>(table.Tables[0].Rows[0], properties);
+        }
+
+        private static T CreateItemFromRow<T>(DataRow row, List<PropertyInfo> properties) where T : new()
         {
             T item = new T();
-            foreach (var property in properties)
+            try
             {
-                if (row[property.Name] == DBNull.Value)
-                    property.SetValue(item, null, null);
-                else
+                foreach (var property in properties)
                 {
-                    if (property.PropertyType.IsEnum)
-                        row[property.Name] = Enum.Parse(property.PropertyType, row[property.Name].ToString());
-                    
-                    property.SetValue(item, row[property.Name], null);
+                    DataColumn columnValue = row.Table.Columns[property.Name];
+                    if (columnValue != null)
+                    {
+                        if (row[property.Name] == DBNull.Value)
+                            property.SetValue(item, null);
+                        else
+                        {
+                            object objectValue;
+                            if (property.PropertyType.IsEnum)
+                            {
+                                objectValue = Enum.Parse(property.PropertyType, row[property.Name].ToString());
+                            }
+                            else if (Nullable.GetUnderlyingType(property.PropertyType) != null)
+                            {
+                                objectValue = Convert.ChangeType(row[property.Name].ToString(), Nullable.GetUnderlyingType(property.PropertyType));
+                            }
+                            else
+                            {
+                                objectValue = TypeDescriptor.GetConverter(property.PropertyType).ConvertFrom(row[property.Name].ToString());
+                            }
+                            property.SetValue(item, objectValue);
+                        }
+                    }
                 }
+                return item;
             }
-            return item;
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
     }
 }

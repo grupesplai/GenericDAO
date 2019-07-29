@@ -39,9 +39,17 @@ namespace Generic.Common.DAO.Impl.ServiceLibrary.Helpers
             new SqlCmd(connDao) { CommandType = CommandType.Text};
 
 
-        public DataSet Execute() => this.parameters == null ? 
-            SqlServerHelper.GetDataSet(this.Connection, this.CommandType, this.CommandText) : 
-            SqlServerHelper.GetDataSet(this.Connection, this.CommandType, this.CommandText, this.parameters);
+        public DataSet ExecuteForAccessDB(string fileName)
+        {
+            if (this.parameters == null)
+                return SqlServerHelper.GetDataSet(this.Connection, this.CommandType, this.CommandText, fileName);
+            else
+                return SqlServerHelper.GetDataSet(this.Connection, this.CommandType, this.CommandText, this.parameters, fileName);
+        }
 
+        public DataSet ExecuteForSQL()
+        {
+            return this.ExecuteForAccessDB(string.Empty);
+        }
     }
 }

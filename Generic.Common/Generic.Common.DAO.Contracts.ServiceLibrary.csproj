@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="Connection\IConnectionString.cs" />
     <Compile Include="DTO\CovalcoDTO.cs" />
+    <Compile Include="DTO\CurrencyCode.cs" />
     <Compile Include="DTO\Status.cs" />
     <Compile Include="IDaoServiceCrud.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

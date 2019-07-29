@@ -50,14 +50,15 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DTOMocks\DataToMapper.cs" />
+    <Compile Include="ImplementationTest\MapperUnitTest.cs" />
     <Compile Include="ImplementationTest\UnitTest1.cs" />
-    <Compile Include="NMock3\NMockTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="NMock3\NMock3 Cheat Sheet.pdf" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
