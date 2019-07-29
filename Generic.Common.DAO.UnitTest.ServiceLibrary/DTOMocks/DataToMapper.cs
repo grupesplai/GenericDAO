@@ -17,15 +17,15 @@ namespace Generic.Common.DAO.UnitTest.ServiceLibrary.DTOMocks
 
         public Guid IdOptional { get; set; }
 
-        public string InventoryKey { get; set; }
+        public string Key { get; set; }
 
         public Status CarrierCode { get; set; }
 
-        public CurrencyCode CurrencyCode { get; set; }
+        public Code CodeValue { get; set; }
 
-        public int? Lid { get; set; }
+        public int? Order { get; set; }
 
-        public decimal? Price { get; set; }
+        public decimal? Amount { get; set; }
 
         public DateTime CreatedDate { get; set; }
     }

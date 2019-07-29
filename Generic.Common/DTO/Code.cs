@@ -1,8 +1,8 @@
 ﻿namespace Generic.Common.DAO.Contracts.ServiceLibrary.DTO
 {
-    public enum CurrencyCode
+    public enum Code
     {
-        EUR = 0,
-        USD
+        XXX = 0,
+        YYY
     }
 }
