@@ -19,7 +19,7 @@ namespace Generic.Common.DAO.UnitTest.ServiceLibrary.DTOMocks
 
         public string Key { get; set; }
 
-        public Status CarrierCode { get; set; }
+        public Status Status { get; set; }
 
         public Code CodeValue { get; set; }
 

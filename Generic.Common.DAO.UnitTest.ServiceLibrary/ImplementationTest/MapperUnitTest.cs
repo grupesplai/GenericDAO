@@ -66,7 +66,7 @@ namespace Vueling.Pricing.DAO.Impl.ServiceLibrary.UnitTest.UnitTest
         [TestMethod]
         public void TestWhen_MapEnumValuesFromString()
         {
-            Assert.AreEqual(mockObject.CarrierCode, Status.Close);
+            Assert.AreEqual(mockObject.Status, Status.Close);
             Assert.AreEqual(mockObject.CodeValue, Code.YYY);
         }
 
