@@ -41,10 +41,10 @@ namespace Generic.Common.DAO.Impl.ServiceLibrary.Helpers.CollectionMapper
             return table;
         }
 
-        public static List<T> ToList<T>(this DataSet table) where T : new()
+        public static IList<T> ToList<T>(this DataSet table) where T : new()
         {
-            List<PropertyInfo> properties = typeof(T).GetProperties().ToList();
-            List<T> result = new List<T>();
+            IList<PropertyInfo> properties = typeof(T).GetProperties().ToList();
+            IList<T> result = new List<T>();
 
             foreach (var row in table.Tables[0].Rows)
             {
@@ -57,12 +57,12 @@ namespace Generic.Common.DAO.Impl.ServiceLibrary.Helpers.CollectionMapper
 
         public static T ToObject<T>(this DataSet table) where T : new()
         {
-            List<PropertyInfo> properties = typeof(T).GetProperties().ToList();
+            IList<PropertyInfo> properties = typeof(T).GetProperties().ToList();
 
             return CreateItemFromRow<T>(table.Tables[0].Rows[0], properties);
         }
 
-        private static T CreateItemFromRow<T>(DataRow row, List<PropertyInfo> properties) where T : new()
+        private static T CreateItemFromRow<T>(DataRow row, IList<PropertyInfo> properties) where T : new()
         {
             T item = new T();
             try
@@ -76,19 +76,7 @@ namespace Generic.Common.DAO.Impl.ServiceLibrary.Helpers.CollectionMapper
                             property.SetValue(item, null);
                         else
                         {
-                            object objectValue;
-                            if (property.PropertyType.IsEnum)
-                            {
-                                objectValue = Enum.Parse(property.PropertyType, row[property.Name].ToString());
-                            }
-                            else if (Nullable.GetUnderlyingType(property.PropertyType) != null)
-                            {
-                                objectValue = Convert.ChangeType(row[property.Name].ToString(), Nullable.GetUnderlyingType(property.PropertyType));
-                            }
-                            else
-                            {
-                                objectValue = TypeDescriptor.GetConverter(property.PropertyType).ConvertFrom(row[property.Name].ToString());
-                            }
+                            object objectValue = TypeDescriptor.GetConverter(property.PropertyType).ConvertFrom(row[property.Name].ToString());
                             property.SetValue(item, objectValue);
                         }
                     }

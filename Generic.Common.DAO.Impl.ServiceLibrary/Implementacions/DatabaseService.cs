@@ -23,7 +23,7 @@ namespace Generic.Common.DAO.Impl.ServiceLibrary
 
         protected virtual void Dispose(bool dispose) => GC.SuppressFinalize(this);
 
-        public List<CovalcoDTO> GetAllData()
+        public IList<CovalcoDTO> GetAllData()
         {
             try
             {
@@ -44,7 +44,7 @@ namespace Generic.Common.DAO.Impl.ServiceLibrary
                                   ,[LastModified]
                                   ,[InsertedDate]
                               FROM [Connectio].[dbo].[CovalcoDetails]")
-                    .ExecuteForSQL().ToList<CovalcoDTO>();
+                    .Execute().ToList<CovalcoDTO>();
             }
             catch (Exception ex)
             {
@@ -52,7 +52,7 @@ namespace Generic.Common.DAO.Impl.ServiceLibrary
             }
         }
 
-        public void insertBulk(List<CovalcoDTO> airportTaxes)
+        public void insertBulk(IList<CovalcoDTO> airportTaxes)
         {
             this.truncateTable("CovalcoDetails");
             SqlBulk.BulkInsertByTake(_conn.DatabaseConnString, "CovalcoDetails", airportTaxes);
@@ -62,7 +62,7 @@ namespace Generic.Common.DAO.Impl.ServiceLibrary
         {
             try
             {
-                SqlCmd.NewTextCommand(_conn.DatabaseConnString).SetCommandText($"Truncate Table {tableName}").ExecuteForSQL();
+                SqlCmd.NewTextCommand(_conn.DatabaseConnString).SetCommandText($"Truncate Table {tableName}").Execute();
             }
             catch (Exception ex)
             {

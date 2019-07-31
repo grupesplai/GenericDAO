@@ -33,7 +33,7 @@ namespace Generic.Common.DAO.UnitTest.ServiceLibrary.ImplementationTest
         [TestMethod]
         public void TestWhen_FlowIsStarted()
         {
-           List<CovalcoDTO> dtos =  _crudService.GetAllData();
+           IList<CovalcoDTO> dtos =  _crudService.GetAllData();
 
             _crudService.insertBulk(dtos);
         }

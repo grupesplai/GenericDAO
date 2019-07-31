@@ -6,8 +6,8 @@ namespace Generic.Common.DAO.Contracts.ServiceLibrary
 {
     public interface IDaoServiceCrud : IDisposable
     {
-        List<CovalcoDTO> GetAllData();
+        IList<CovalcoDTO> GetAllData();
 
-        void insertBulk(List<CovalcoDTO> covalcodto);
+        void insertBulk(IList<CovalcoDTO> covalcodto);
     }
 }
